@@ -1,0 +1,9 @@
+.gradle
+gradle
+.idea
+.vscode
+build
+bin
+run
+LICENSE
+README.md
