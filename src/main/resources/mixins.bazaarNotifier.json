@@ -1,6 +1,6 @@
 {
   "package": "io.github.undercovergoose.bazaarNotifier.mixin",
-  "refmap": "mixins.bbntaw.refmap.json",
+  "refmap": "mixins.bazaarNotifier.refmap.json",
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8",
   "mixins": [

@@ -34,7 +34,7 @@ public class Order {
         return true;
     }
     private void updateFilledQuantity(int newQuantity) {
-        if(filledQuantity != newQuantity && newQuantity > filledQuantity) {
+        if(this.quantity < 1000 && (filledQuantity != newQuantity && newQuantity > filledQuantity)) {
             int dif = newQuantity - filledQuantity;
             Message msg = new Message();
             String prefix = this.isBuyOrder ? "Bought" : "Sold";

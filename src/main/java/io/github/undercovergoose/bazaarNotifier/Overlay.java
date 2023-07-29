@@ -12,9 +12,22 @@ import static io.github.undercovergoose.bazaarNotifier.Main.*;
 public class Overlay {
     public static ArrayList<Order> BazaarOrders = new ArrayList<Order>();
     public static String globalStatus = "";
+    public static double globalMovingCoins = 0;
     private static final Utils utils = new Utils();
     public void drawText(String text, float x, float y) {
         MC.fontRendererObj.drawStringWithShadow(text, x, y, 0xffFFFFFF);
+    }
+    public static void addBazaarOrder(Order order) {
+        BazaarOrders.add(order);
+        calcMovingCoins();
+    }
+    public static void calcMovingCoins() {
+        double movingCoins = 0;
+        for(Order order : BazaarOrders) {
+            final int quantityLeft = order.quantity - order.filledQuantity;
+            movingCoins += quantityLeft * order.unitPrice;
+        }
+        globalMovingCoins = movingCoins;
     }
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderExperienceBar(RenderGameOverlayEvent.Text event) {
@@ -22,7 +35,7 @@ public class Overlay {
         GlStateManager.scale(0.85, 0.85, 0.85);
         int x = 4;
         int y = 4;
-        drawText("§e§l§nBazaar Orders " + globalStatus, x, y);
+        drawText("§e§l§nBazaar Orders§r §d" + utils.prettyNum(globalMovingCoins) + " moving coins " + globalStatus, x, y);
         y += 10;
         for(Order order : BazaarOrders) {
             final String color1 = order.isBuyOrder ? "§6§l" : "§3§l";

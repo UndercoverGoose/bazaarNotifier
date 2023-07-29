@@ -1,5 +1,7 @@
 package io.github.undercovergoose.bazaarNotifier;
 
+import static io.github.undercovergoose.bazaarNotifier.Overlay.calcMovingCoins;
+
 import com.google.gson.JsonObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -39,8 +41,8 @@ public class TickEvent {
             Overlay.BazaarOrders = BazaarOrdersTemp;
             writeTemp = false;
             lastCheck = new Date().getTime() - 11500;
+            calcMovingCoins();
         }
-        return;
     }
     private static final Utils utils = new Utils();
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -100,7 +102,7 @@ public class TickEvent {
 
         final int amount = (int) parseDouble(cleanColour(itemLore.get(amountIndex).toString()));
         final double unitPrice = parseDouble(cleanColour(itemLore.get(unitPriceIndex).toString()));
-        final int filledQuantity = hasFilledItems ? (int) parseDouble(filledLine.split("/")[0]) : 0;
+        final int filledQuantity = hasFilledItems && amount < 1000 ? (int) parseDouble(filledLine.split("/")[0]) : 0;
 
         Order order = new Order();
         order.productName = itemName;
