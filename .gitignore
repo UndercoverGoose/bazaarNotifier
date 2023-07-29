@@ -5,6 +5,5 @@ gradle
 build
 bin
 run
-LICENSE
 README.md
 .DS_Store
