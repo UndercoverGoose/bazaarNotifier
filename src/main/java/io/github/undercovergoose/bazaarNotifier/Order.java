@@ -18,7 +18,7 @@ public class Order {
         if(canSendStateMessage || lastStateLog == 1) return;
         Message msg = new Message();
         String prefix = this.isBuyOrder ? "Buy" : "Sell";
-        msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §ewas filled!");
+        msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §ewas filled§7!");
         msg.send();
         canSendStateMessage = false;
         lastStateLog = 1;
@@ -27,7 +27,7 @@ public class Order {
         if(canSendStateMessage || lastStateLog == 2) return;
         Message msg = new Message();
         String prefix = this.isBuyOrder ? "Buy" : "Sell";
-        String suffix = tied ? "was matched!" : "is no longer the best!";
+        String suffix = tied ? "was matched§7!" : "is no longer the best§7!";
         msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §e" + suffix);
         msg.send();
         lastStateLog = 2;
@@ -38,7 +38,7 @@ public class Order {
         if(!wasBest) {
             Message msg = new Message();
             String prefix = this.isBuyOrder ? "Buy" : "Sell";
-            msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §ehas been revived!");
+            msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §ehas been revived§7!");
             msg.send();
         }
         lastStateLog = 3;
