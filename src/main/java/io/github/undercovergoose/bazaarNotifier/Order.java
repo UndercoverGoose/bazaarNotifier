@@ -15,7 +15,7 @@ public class Order {
     private boolean canSendStateMessage = true;
     private int lastStateLog = 0;
     private void sendFilledMessage() {
-        if(canSendStateMessage || lastStateLog == 1) return;
+        if(!canSendStateMessage || lastStateLog == 1) return;
         Message msg = new Message();
         String prefix = this.isBuyOrder ? "Buy" : "Sell";
         msg.addText("§6[Bazaar] §eYour §a" + prefix + " Order §efor §a" + this.quantity + "§7x §f" + this.productName + " §ewas filled§7!");
@@ -24,7 +24,7 @@ public class Order {
         lastStateLog = 1;
     }
     private void sendOutdatedMessage(boolean tied) {
-        if(canSendStateMessage || lastStateLog == 2) return;
+        if(!canSendStateMessage || lastStateLog == 2) return;
         Message msg = new Message();
         String prefix = this.isBuyOrder ? "Buy" : "Sell";
         String suffix = tied ? "was matched§7!" : "is no longer the best§7!";
@@ -33,8 +33,8 @@ public class Order {
         lastStateLog = 2;
     }
     private void sendRevivedMessage(String oldStatus) {
-        if(canSendStateMessage || lastStateLog == 3) return;
-        boolean wasBest = oldStatus.contains("#1");
+        if(!canSendStateMessage || lastStateLog == 3) return;
+        boolean wasBest = oldStatus.contains("#1") || oldStatus.contains("Unknown") || oldStatus.contains("Not Found");
         if(!wasBest) {
             Message msg = new Message();
             String prefix = this.isBuyOrder ? "Buy" : "Sell";
@@ -60,7 +60,7 @@ public class Order {
     public boolean markFilled() {
         long now = new Date().getTime();
         if(now - this.createdAt < 25000) return false;
-        this.status = "§a§l§kM §a§lFilled §a§l§kM";
+        this.status = "§a§l§kM§r §a§lFilled §a§l§kM";
         this.filledQuantity = this.quantity;
         this.sendFilledMessage();
         return true;
@@ -78,7 +78,7 @@ public class Order {
     }
     public void checkOrder() {
         if(this.quantityLeft() == 0) {
-            this.status = "§a§l§kM §a§lFilled §a§l§kM";
+            this.status = "§a§l§kM§r §a§lFilled §a§l§kM";
             this.sendFilledMessage();
             return;
         }
@@ -136,7 +136,7 @@ public class Order {
             JsonArray data = utils.jsonGetArray(bazaarItems, skyblockId + ".buy_summary");
             if(data.size() == 0) {
                 this.status = "§4§lNo Orders";
-                this.canSendStateMessage = false;
+                this.canSendStateMessage = true;
             }
             for(int i = 0; i < data.size(); i++) {
                 JsonObject idx = (JsonObject) data.get(i);
